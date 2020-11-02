@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>ICONS/编辑.svg</file>
+        <file>ICONS/表单.svg</file>
+        <file>ICONS/菜单.svg</file>
+        <file>ICONS/发现.svg</file>
+        <file>ICONS/个人中心.svg</file>
+        <file>ICONS/更多.svg</file>
+        <file>ICONS/开始.svg</file>
+        <file>ICONS/评价.svg</file>
+        <file>ICONS/评论.svg</file>
+        <file>ICONS/其他.svg</file>
+        <file>ICONS/扫一扫.svg</file>
+        <file>ICONS/上一首.svg</file>
+        <file>ICONS/设置.svg</file>
+        <file>ICONS/收藏.svg</file>
+        <file>ICONS/搜索.svg</file>
+        <file>ICONS/提醒.svg</file>
+        <file>ICONS/退出.svg</file>
+        <file>ICONS/喜欢.svg</file>
+        <file>ICONS/下一首.svg</file>
+        <file>ICONS/消息.svg</file>
+        <file>ICONS/信息.svg</file>
+        <file>ICONS/循环.svg</file>
+        <file>ICONS/音乐圈.svg</file>
+        <file>ICONS/隐藏.svg</file>
+        <file>ICONS/暂停.svg</file>
+    </qresource>
+</RCC>
