@@ -46,5 +46,9 @@ void MainWindow::initUI()
     //设置右边部分
     //封面大小
     ui->label_ListImage->setFixedSize(220,220);
+
+    //设置ListWidget的高度为行数*每行高度
+    ui->listWidget_Mine->setFixedHeight(ui->listWidget_Mine->sizeHintForRow(0) * ui->listWidget_Mine->count());
+    ui->listWidget_MusicSource->setFixedHeight(ui->listWidget_MusicSource->sizeHintForRow(0) * ui->listWidget_MusicSource->count());
 }
 
