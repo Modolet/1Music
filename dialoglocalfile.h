@@ -2,6 +2,12 @@
 #define DIALOGLOCALFILE_H
 
 #include <QDialog>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QString>
+#include <QStringList>
+
+#include "models.h"
 
 namespace Ui {
 class DialogLocalFile;
@@ -17,6 +23,11 @@ public:
 
 private:
     Ui::DialogLocalFile *ui;
+    QStringList Dirs;
+    ListModel *List;
+
+    void on_PushButton_addClicked();
+    void on_PushButton_OK_Clicked();
 };
 
 #endif // DIALOGLOCALFILE_H

@@ -45,7 +45,7 @@ private:
     void _updateFile();
 
 public:
-    ListModel(QString url);
+    ListModel(QString url,bool isLocalList);
 
     bool IsLocalList;//是否为本地歌单
     QString Url;//

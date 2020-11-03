@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidgetItem>
+
+#include "dialoglocalfile.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,5 +22,8 @@ private:
     Ui::MainWindow *ui;
     void initUI();
     void Connect();
+
+public slots:
+    void on_listWidget_MusicSource_itemChanged(QListWidgetItem* item);
 };
 #endif // MAINWINDOW_H

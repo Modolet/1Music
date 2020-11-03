@@ -55,6 +55,16 @@ void MainWindow::initUI()
 
 void MainWindow::Connect()
 {
+    connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
+}
 
+void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
+{
+    if(item->text() == "本地音乐")
+    {
+        DialogLocalFile* w = new DialogLocalFile(this);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->exec();
+    }
 }
 
