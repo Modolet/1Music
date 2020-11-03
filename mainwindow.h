@@ -18,5 +18,6 @@ public:
 private:
     Ui::MainWindow *ui;
     void initUI();
+    void Connect();
 };
 #endif // MAINWINDOW_H

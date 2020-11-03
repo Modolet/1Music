@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->initUI();
+    this->Connect();
 }
 
 MainWindow::~MainWindow()
@@ -50,5 +51,10 @@ void MainWindow::initUI()
     //设置ListWidget的高度为行数*每行高度
     ui->listWidget_Mine->setFixedHeight(ui->listWidget_Mine->sizeHintForRow(0) * ui->listWidget_Mine->count());
     ui->listWidget_MusicSource->setFixedHeight(ui->listWidget_MusicSource->sizeHintForRow(0) * ui->listWidget_MusicSource->count());
+}
+
+void MainWindow::Connect()
+{
+
 }
 
