@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QVector>
+#include <QDebug>
 
 #include "models.h"
 #include "library.h"

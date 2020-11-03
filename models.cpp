@@ -45,7 +45,6 @@ SongModel::SongModel(QString url,bool IsLocalSong)
         FileName = url.split("/").last();
         FileName = FileName.mid(0,FileName.lastIndexOf("."));
         Title = FileName.mid(0,FileName.lastIndexOf("."));
-        qDebug() << FileName << Title;
     }
 }
 
