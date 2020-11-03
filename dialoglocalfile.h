@@ -28,7 +28,6 @@ public:
 private:
     Ui::DialogLocalFile *ui;
     QStringList Dirs;
-    ListModel *List;
     Library *library;
 
 public slots:

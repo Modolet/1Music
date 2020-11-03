@@ -16,7 +16,6 @@ DialogLocalFile::DialogLocalFile(QWidget *parent,Library *library) :
 DialogLocalFile::~DialogLocalFile()
 {
     delete ui;
-    delete List;
 }
 
 void DialogLocalFile::on_PushButton_addClicked()

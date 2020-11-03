@@ -78,9 +78,8 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         //不存在就弹出对话框，扫描
         else
         {
-            DialogLocalFile* w = new DialogLocalFile(this,library);
-            w->setAttribute(Qt::WA_DeleteOnClose);
-            w->exec();
+            DialogLocalFile w(nullptr,library);
+            w.exec();
         }
     }
 }
