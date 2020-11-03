@@ -350,7 +350,7 @@ background-color: rgba(255, 255, 255, 0);</string>
                </layout>
               </item>
               <item>
-               <widget class="QTableWidget" name="tableWidget">
+               <widget class="QTableWidget" name="tableWidget_LocalList">
                 <property name="styleSheet">
                  <string notr="true">border:0px solid gray;
 background-color: rgba(255, 255, 255, 0);</string>

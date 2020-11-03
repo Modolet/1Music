@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     models.cpp \
+    otherui.cpp \
     player.cpp
 
 HEADERS += \
@@ -21,6 +22,7 @@ HEADERS += \
     library.h \
     mainwindow.h \
     models.h \
+    otherui.h \
     player.h
 
 FORMS += \

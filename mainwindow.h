@@ -9,6 +9,7 @@
 #include "models.h"
 #include "library.h"
 #include "dialoglocalfile.h"
+#include "otherui.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

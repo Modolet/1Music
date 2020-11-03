@@ -82,9 +82,20 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         //扫描完成，或者歌单存在
         //获取歌单
         localList = library->GetList("local");
-        for(SongModel song : localList->Songs)
+        //添加进TableWidget
+        int i = 0;
+        //设置行数列数
+        ui->tableWidget_LocalList->setRowCount(localList->Songs.size());
+        ui->tableWidget_LocalList->setColumnCount(1);
+        //设置列宽
+        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        //隐藏表头
+        ui->tableWidget_LocalList->horizontalHeader()->hide();
+        for(SongModel song:localList->Songs)
         {
             qDebug() << song.Title;
+            ui->tableWidget_LocalList->setItem(i,0,static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title)));
+            i++;
         }
     }
 }
