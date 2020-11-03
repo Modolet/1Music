@@ -11,34 +11,42 @@ ListModel::ListModel(QString url, bool isLocalList)
     this->IsLocalList = isLocalList;
 }
 
-void ListModel::setName(QString name)
+void ListModel::setName(const QString &name)
 {
     this->Name = name;
 }
 
-void ListModel::setCreateTime(QDateTime time)
+void ListModel::setCreateTime(const QDateTime &time)
 {
     this->CreateTime = time;
 }
 
-void ListModel::insertSong(SongModel song)
+void ListModel::insertSong(const SongModel &song)
 {
     this->Songs.append(song);
 }
 
-void ListModel::deleteSong(SongModel song)
+void ListModel::deleteSong(const SongModel &song)
 {
     this->Songs.removeOne(song);
 }
 
-void ListModel::setInfo(QString info)
+void ListModel::setInfo(const QString &info)
 {
     this->Info = info;
 }
 
-SongModel::SongModel(QString url)
+SongModel::SongModel(QString url,bool IsLocalSong)
 {
     this->Url = url;
+    this->IsLocalSong = IsLocalSong;
+    if(IsLocalSong)
+    {
+        FileName = url.split("/").last();
+        FileName = FileName.mid(0,FileName.lastIndexOf("."));
+        Title = FileName.mid(0,FileName.lastIndexOf("."));
+        qDebug() << FileName << Title;
+    }
 }
 
 bool SongModel::operator==(const SongModel &obj)

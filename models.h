@@ -8,6 +8,9 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonArray>
+#include <QFile>
+#include <QDebug>
+#include <QMediaPlayer>
 
 //音乐资源模型
 class Models : public QObject
@@ -28,12 +31,12 @@ public:
     int Id;//Id值。本地文件不需要id
     QString Source;//音源
     QString Url;//
-    QString Name;//歌名
+    QString Title;//歌名
     QString Singer;//歌手
     QString Album;//专辑
+    QString FileName;//文件名
 
-    SongModel(QString url);
-
+    SongModel(QString url,bool IsLocalSong = false);
     bool operator==(const SongModel &obj);
 };
 
@@ -57,11 +60,11 @@ public:
     QString Author;//创建者
     QVector<SongModel> Songs;//歌曲列表
 
-    void setName(QString name);
-    void setCreateTime(QDateTime time);
-    void insertSong(SongModel song);
-    void deleteSong(SongModel song);
-    void setInfo(QString info);
+    void setName(const QString &name);
+    void setCreateTime(const QDateTime &time);
+    void insertSong(const SongModel &song);
+    void deleteSong(const SongModel &song);
+    void setInfo(const QString &info);
 
 };
 

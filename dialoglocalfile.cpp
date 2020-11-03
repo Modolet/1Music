@@ -22,12 +22,15 @@ DialogLocalFile::~DialogLocalFile()
 
 void DialogLocalFile::_FindFiles(QString startDir)
 {
+    //递归查找歌曲
     QDir dir(startDir);
     for(QString subdir : dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
         _FindFiles(startDir + "/" + subdir);
+    //查找本文件夹的歌曲
     for(QString file : dir.entryList(Filters,QDir::Files))
     {
-        qDebug() << startDir + "/" + file;
+        SongModel song(startDir + "/" + file,true);
+
     }
 }
 
