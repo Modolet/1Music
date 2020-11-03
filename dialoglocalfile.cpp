@@ -31,4 +31,11 @@ void DialogLocalFile::on_PushButton_OK_Clicked()
 {
     if(Dirs.isEmpty())return;
     library->GetLocalAudio(Dirs);
+    //禁用关闭按钮
+    this->setWindowFlags(Qt::WindowCloseButtonHint);
+    //需要等待搜索完成才能关闭
+    connect(library,&Library::Signal_SearchFinish,[=]()
+    {
+        this->close();
+    });
 }

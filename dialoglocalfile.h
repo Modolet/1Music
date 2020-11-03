@@ -5,8 +5,6 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QString>
-#include <QStringList>
-#include <QDirIterator>
 
 #include <QDebug>
 

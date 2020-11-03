@@ -32,7 +32,7 @@ private:
     void _FindFiles(QString startDir);
 
 signals:
-
+    void Signal_SearchFinish();
 };
 
 #endif // LIBRARY_H

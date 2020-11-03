@@ -20,11 +20,16 @@ void Library::GetLocalAudio(QStringList dirs)
 {
     //设置过滤器
     Filters << "*.mp3" << "*.wav" << "*.ape" << "*.flac" << "*.aac" << "*.ogg";
-
+    //因为mainwindow的library可以看作是全局变量，所以每次获取本地音乐的时候要检测localList是不是空指针，防止内存泄漏
     //创建本地歌单文件
-    localList = new ListModel("./lists/locallist.json",true);
+    if(localList != nullptr)
+        delete localList;
+    if(localList == nullptr)
+        localList = new ListModel("./lists/locallist.json",true);
     for(QString dir : dirs)
         _FindFiles(dir);
+    //搜索完成时，发送信号
+    emit Signal_SearchFinish();
 }
 
 void Library::_FindFiles(QString startDir)
