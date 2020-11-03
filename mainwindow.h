@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
+#include <QVector>
 
+#include "models.h"
+#include "library.h"
 #include "dialoglocalfile.h"
 
 QT_BEGIN_NAMESPACE
@@ -20,6 +23,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    //歌单列表
+    QVector<ListModel>* lists;
+    //本地音乐列表
+    ListModel* localList;
+    //音乐库
+    Library* library;
     void initUI();
     void Connect();
 

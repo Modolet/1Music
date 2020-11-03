@@ -60,11 +60,15 @@ public:
     QString Author;//创建者
     QVector<SongModel> Songs;//歌曲列表
 
+    //设置值
     void setName(const QString &name);
     void setCreateTime(const QDateTime &time);
+    //插入/删除歌曲
     void insertSong(const SongModel &song);
     void deleteSong(const SongModel &song);
     void setInfo(const QString &info);
+    //保存歌单到本地
+    void saveJson();
 
 };
 

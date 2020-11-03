@@ -1,12 +1,11 @@
 #include "dialoglocalfile.h"
 #include "ui_dialoglocalfile.h"
 
-DialogLocalFile::DialogLocalFile(QWidget *parent) :
+DialogLocalFile::DialogLocalFile(QWidget *parent,Library *library) :
     QDialog(parent),
     ui(new Ui::DialogLocalFile)
 {
-    List = new ListModel(QString("./lists/locallist.json"),true);
-
+    this->library = library;
     ui->setupUi(this);
     this->setWindowTitle("添加本地文件夹");
 
@@ -20,20 +19,6 @@ DialogLocalFile::~DialogLocalFile()
     delete List;
 }
 
-void DialogLocalFile::_FindFiles(QString startDir)
-{
-    //递归查找歌曲
-    QDir dir(startDir);
-    for(QString subdir : dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
-        _FindFiles(startDir + "/" + subdir);
-    //查找本文件夹的歌曲
-    for(QString file : dir.entryList(Filters,QDir::Files))
-    {
-        SongModel song(startDir + "/" + file,true);
-
-    }
-}
-
 void DialogLocalFile::on_PushButton_addClicked()
 {
     QString Dir = QFileDialog::getExistingDirectory(this,"请选择音乐文件夹","/");
@@ -45,12 +30,6 @@ void DialogLocalFile::on_PushButton_addClicked()
 
 void DialogLocalFile::on_PushButton_OK_Clicked()
 {
-    //设置过滤器
-    Filters << "*.mp3" << "*.wav" << "*.ape" << "*.flac" << "*.aac" << "*.ogg";
     if(Dirs.isEmpty())return;
-
-    for(QString n : Dirs)
-    {
-        this->_FindFiles(n);
-    }
+    library->GetLocalAudio(Dirs);
 }

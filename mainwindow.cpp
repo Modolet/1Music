@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    library = new Library;
     ui->setupUi(this);
     this->initUI();
     this->Connect();
@@ -62,20 +63,22 @@ void MainWindow::Connect()
 
 void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
 {
+    /*
+     * 注意：切换不同的平台时，要记得回收旧平台的ListModel
+     */
+
     //点击不同的按钮
     if(item->text() == "本地音乐")
     {
-        //检查本地歌曲json文件是否存在
-        QFileInfo localJsonFile("./lists/./lists/locallist.json");
-        //存在就读取
-        if(localJsonFile.isFile())
+        library->Register(SOURCE::local);
+        if(library->GetList("local") != nullptr)
         {
 
         }
         //不存在就弹出对话框，扫描
         else
         {
-            DialogLocalFile* w = new DialogLocalFile(this);
+            DialogLocalFile* w = new DialogLocalFile(this,library);
             w->setAttribute(Qt::WA_DeleteOnClose);
             w->exec();
         }

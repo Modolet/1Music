@@ -10,6 +10,7 @@
 
 #include <QDebug>
 
+#include "library.h"
 #include "models.h"
 
 namespace Ui {
@@ -21,16 +22,14 @@ class DialogLocalFile : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogLocalFile(QWidget *parent = nullptr);
+    explicit DialogLocalFile(QWidget *parent = nullptr,Library* = nullptr);
     ~DialogLocalFile();
 
 private:
     Ui::DialogLocalFile *ui;
     QStringList Dirs;
     ListModel *List;
-    QStringList Filters;
-
-    void _FindFiles(QString);
+    Library *library;
 
 public slots:
     void on_PushButton_addClicked();
