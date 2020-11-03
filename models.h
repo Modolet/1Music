@@ -33,6 +33,8 @@ public:
     QString Album;//专辑
 
     SongModel(QString url);
+
+    bool operator==(const SongModel &obj);
 };
 
 class ListModel

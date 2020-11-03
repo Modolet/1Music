@@ -11,12 +11,24 @@ DialogLocalFile::DialogLocalFile(QWidget *parent) :
     this->setWindowTitle("添加本地文件夹");
 
     connect(ui->pushButton_Add,&QPushButton::clicked,this,&DialogLocalFile::on_PushButton_addClicked);
+    connect(ui->pushButton_OK,&QPushButton::clicked,this,&DialogLocalFile::on_PushButton_OK_Clicked);
 }
 
 DialogLocalFile::~DialogLocalFile()
 {
     delete ui;
     delete List;
+}
+
+void DialogLocalFile::_FindFiles(QString startDir)
+{
+    QDir dir(startDir);
+    for(QString subdir : dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot))
+        _FindFiles(startDir + "/" + subdir);
+    for(QString file : dir.entryList(Filters,QDir::Files))
+    {
+        qDebug() << startDir + "/" + file;
+    }
 }
 
 void DialogLocalFile::on_PushButton_addClicked()
@@ -30,5 +42,12 @@ void DialogLocalFile::on_PushButton_addClicked()
 
 void DialogLocalFile::on_PushButton_OK_Clicked()
 {
+    //设置过滤器
+    Filters << "*.mp3" << "*.wav" << "*.ape" << "*.flac" << "*.aac" << "*.ogg";
+    if(Dirs.isEmpty())return;
 
+    for(QString n : Dirs)
+    {
+        this->_FindFiles(n);
+    }
 }

@@ -17,6 +17,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::initUI()
 {
+    //设置窗口标题
+    this->setWindowTitle("1Music");
     //设置底部部分
     //设置下方左侧三个按钮的大小
     ui->pushButton_NextSong->setFixedSize(40,40);

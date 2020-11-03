@@ -6,6 +6,9 @@
 #include <QFileDialog>
 #include <QString>
 #include <QStringList>
+#include <QDirIterator>
+
+#include <QDebug>
 
 #include "models.h"
 
@@ -25,7 +28,11 @@ private:
     Ui::DialogLocalFile *ui;
     QStringList Dirs;
     ListModel *List;
+    QStringList Filters;
 
+    void _FindFiles(QString);
+
+public slots:
     void on_PushButton_addClicked();
     void on_PushButton_OK_Clicked();
 };

@@ -35,3 +35,15 @@ void ListModel::setInfo(QString info)
 {
     this->Info = info;
 }
+
+SongModel::SongModel(QString url)
+{
+    this->Url = url;
+}
+
+bool SongModel::operator==(const SongModel &obj)
+{
+    if(this->Url == obj.Url)
+        return true;
+    return false;
+}
