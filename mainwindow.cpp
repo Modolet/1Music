@@ -70,18 +70,19 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
     //点击不同的按钮
     if(item->text() == "本地音乐")
     {
+        //获取歌单
+        localList = library->GetList("local");
         //切换页面
         ui->stackedWidget_list->setCurrentWidget(ui->page_local);
         //不存在就弹出对话框，扫描
         library->Register(SOURCE::local);
-        if(library->GetList("local")->isExist())
+        if(!library->GetList("local")->isExist())
         {
             DialogLocalFile w(nullptr,library);
             w.exec();
         }
         //扫描完成，或者歌单存在
         //获取歌单
-        localList = library->GetList("local");
         //添加进TableWidget
         int i = 0;
         //设置行数列数

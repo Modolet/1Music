@@ -8,8 +8,10 @@ Models::Models(QObject *parent) : QObject(parent)
 ListModel::ListModel(QString url, bool isLocalList)
 {
     //检查文件是否存在
-    if(!QFileInfo(url).isFile() && isLocalList)
+    if((!QFileInfo(url).isFile()) && isLocalList)
+    {
         IsExist = false;
+    }
     else
         IsExist = true;
     this->Url = url;
@@ -116,7 +118,7 @@ void ListModel::ReadJson()
         file = new QFile("./lists/" + this->Name + ".json");
     file->open(QIODevice::ReadOnly);
 
-    json_file.fromJson(file->readAll());
+    json_file = QJsonDocument::fromJson(file->readAll());
     file->close();
     json_doc = json_file.object();
     try {
