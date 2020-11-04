@@ -14,6 +14,7 @@ class Library : public QObject
     Q_OBJECT
 public:
     explicit Library(QObject *parent = nullptr);
+    ~Library();
     //注册平台
     void Register(SOURCE);
     //获取歌单列表

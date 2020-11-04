@@ -5,6 +5,12 @@ Library::Library(QObject *parent) : QObject(parent)
 
 }
 
+Library::~Library()
+{
+    if(localList)
+        delete localList;
+}
+
 void Library::Register(SOURCE id)
 {
     this->source = id;
@@ -13,7 +19,7 @@ void Library::Register(SOURCE id)
 ListModel *Library::GetList(QString ListName)
 {
     if(ListName == "local")
-        return localList;
+        return new ListModel("./lists/locallist.json",true);
 }
 
 void Library::GetLocalAudio(QStringList dirs)
@@ -24,11 +30,11 @@ void Library::GetLocalAudio(QStringList dirs)
     //创建本地歌单文件
     if(localList != nullptr)
         delete localList;
-    if(localList == nullptr)
-        localList = new ListModel("./lists/locallist.json",true);
+    localList = new ListModel("./lists/locallist.json",true);
     for(QString dir : dirs)
         _FindFiles(dir);
-    //搜索完成时，发送信号
+    //搜索完成时，保存文件并发送信号
+    localList->saveJson();
     emit Signal_SearchFinish();
 }
 

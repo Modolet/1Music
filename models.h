@@ -5,10 +5,13 @@
 #include <QString>
 #include <QDateTime>
 #include <QVector>
+#include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QFile>
+#include <QDir>
+#include <QFileInfo>
 #include <QDebug>
 #include <QMediaPlayer>
 
@@ -37,6 +40,7 @@ public:
     QString FileName;//文件名
 
     SongModel(QString url,bool IsLocalSong = false);
+    ~SongModel();
     bool operator==(const SongModel &obj);
 };
 
@@ -51,9 +55,10 @@ private:
 
 public:
     ListModel(QString url,bool isLocalList);
+    ~ListModel();
 
-    bool IsLocalList;//是否为本地歌单
-    QString Url;//
+
+    QString Url;//URL
     QString Name;//歌单名
     QString Info;//歌单简介/信息
     QDateTime CreateTime;//创建时间
@@ -69,6 +74,13 @@ public:
     void setInfo(const QString &info);
     //保存歌单到本地
     void saveJson();
+    //读取json
+    void ReadJson();
+    //查询本地文件是否存在
+    bool isExist();
+private:
+    bool IsExist;
+    bool IsLocalList;//是否为本地歌单
 
 };
 

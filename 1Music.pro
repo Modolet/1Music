@@ -2,7 +2,9 @@ QT       += core gui network multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QT_CONFIG -= no-pkg-config
 CONFIG += c++11
+PKGCONFIG += mpv
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

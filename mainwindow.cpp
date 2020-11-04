@@ -74,7 +74,7 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         ui->stackedWidget_list->setCurrentWidget(ui->page_local);
         //不存在就弹出对话框，扫描
         library->Register(SOURCE::local);
-        if(library->GetList("local") == nullptr)
+        if(library->GetList("local")->isExist())
         {
             DialogLocalFile w(nullptr,library);
             w.exec();
