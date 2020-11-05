@@ -63,6 +63,9 @@ void MainWindow::initUI()
 
 void MainWindow::Connect()
 {
+    connect(ui->horizontalSlider_Song,&QSlider::sliderPressed,[=]()mutable{
+        isSliderPress = true;
+    });
     //点击本地音乐
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
     //点击本地音乐列表
@@ -79,6 +82,10 @@ void MainWindow::Connect()
                                       arg(((SongQTableWidgetItem*)item)->song.seconds,2,10,QLatin1Char('0')));
         //设置滑动条最大值
         ui->horizontalSlider_Song->setMaximum(((SongQTableWidgetItem*)item)->song.times);
+        //设置滑动条当前值
+        ui->horizontalSlider_Song->setValue(0);
+        //没有被按下
+        isSliderPress = false;
     });
     //播放器状态改变时发送信号给暂停键
     connect(this->player,&Player::stateChanged,ui->pushButton_PauseSong,&QPushButtonPause::slot_stateChanged);
@@ -90,11 +97,13 @@ void MainWindow::Connect()
         //改变label的值
         ui->label_CurrentTime->setText(QString("%1:%2").arg(minutes).arg(seconds,2,10,QLatin1Char('0')));
         //改变滑动条的值
-        ui->horizontalSlider_Song->setValue(p);
+        if(!isSliderPress)
+            ui->horizontalSlider_Song->setValue(p);
     });
     //通过滚动条修改进度
-    connect(ui->horizontalSlider_Song,&QSlider::sliderReleased,[=](){
+    connect(ui->horizontalSlider_Song,&QSlider::sliderReleased,[=]()mutable{
         player->setPosition(ui->horizontalSlider_Song->value() * 1000);
+        isSliderPress = false;
     });
 }
 

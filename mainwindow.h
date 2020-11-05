@@ -34,11 +34,15 @@ private:
     Library* library;
     //播放器
     Player* player;
+    //音乐滑动条是否被按下
+    bool isSliderPress = true;
 
     void initUI();
     void Connect();
 
 public slots:
     void on_listWidget_MusicSource_itemChanged(QListWidgetItem* item);
+
+
 };
 #endif // MAINWINDOW_H
