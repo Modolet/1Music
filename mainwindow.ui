@@ -210,6 +210,10 @@ background-color: rgba(255, 255, 255, 0);</string>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
                  <widget class="QPushButton" name="pushButton_SongImage">
+                  <property name="styleSheet">
+                   <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -236,19 +240,32 @@ background-color: rgba(255, 255, 255, 0);</string>
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_2">
                   <item>
-                   <widget class="QPushButton" name="pushButton_Love">
+                   <widget class="QPushButton" name="pushButton_Star">
                     <property name="styleSheet">
-                     <string notr="true">border-image: url(:/icon/ICONS/收藏.svg);</string>
+                     <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
                     </property>
                     <property name="text">
                      <string/>
                     </property>
+                    <property name="icon">
+                     <iconset resource="image.qrc">
+                      <normaloff>:/icon/ICONS/收藏.svg</normaloff>:/icon/ICONS/收藏.svg</iconset>
+                    </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="pushButton_Favorite">
+                   <widget class="QPushButton" name="pushButton_Love">
+                    <property name="styleSheet">
+                     <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
+                    </property>
                     <property name="text">
-                     <string>收藏</string>
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="image.qrc">
+                      <normaloff>:/icon/ICONS/喜欢.svg</normaloff>:/icon/ICONS/喜欢.svg</iconset>
                     </property>
                    </widget>
                   </item>
@@ -566,6 +583,8 @@ background-color: rgba(255, 255, 255, 0);</string>
    <header>otherui.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="image.qrc"/>
+ </resources>
  <connections/>
 </ui>

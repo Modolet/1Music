@@ -40,12 +40,19 @@ public:
     void loadSong(QString song,bool isVideo = false);//url为网络链接或者本地文件，video为是否播放视频
     //设置歌单模型
     void setList(ListModel *list);
+    //设置position
+    void setPosition(qint64);
+
 
 private:
     //歌单模型
     ListModel* list;
     //播放器
     QMediaPlayer* player;
+
+signals:
+    void stateChanged(QMediaPlayer::State);
+    void positionChanged(qint64 position);
 
 
 

@@ -48,6 +48,7 @@ public:
     QString FileName;//文件名
     int minutes;//分钟数
     int seconds;//秒钟数
+    int times;//总数
 
     SongModel(QString url,bool IsLocalSong = false);
     ~SongModel();

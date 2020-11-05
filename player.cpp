@@ -4,7 +4,15 @@ Player::Player(QObject *parent)
     :QObject(parent)
 {
     this->player = new QMediaPlayer(this);
-    //监测文件读取状态
+    //转发信号
+    connect(this->player,&QMediaPlayer::stateChanged,[=](QMediaPlayer::State m)
+    {
+        emit stateChanged(m);
+    });
+    connect(this->player,&QMediaPlayer::positionChanged,[=](qint64 p)
+    {
+        emit positionChanged(p);
+    });
 }
 
 Player::Player(const Player &t)
@@ -44,4 +52,9 @@ void Player::play()
 void Player::setList(ListModel* list)
 {
     this->list = list;
+}
+
+void Player::setPosition(qint64 p)
+{
+    this->player->setPosition(p);
 }

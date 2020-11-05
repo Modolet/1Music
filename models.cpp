@@ -160,6 +160,7 @@ SongModel::SongModel(QString url,bool IsLocalSong)
         this->Album = QString::fromStdWString(file.tag()->album().toWString());
         this->Singer = QString::fromStdWString(file.tag()->artist().toWString());
         this->Title = QString::fromStdWString(file.tag()->title().toWString());
+        this->times = file.audioProperties()->length();
         this->seconds = file.audioProperties()->length() % 60;
         this->minutes = (file.audioProperties()->length() - seconds) / 60;
         this->Source = "本地文件";

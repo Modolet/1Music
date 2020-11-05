@@ -35,6 +35,8 @@ void MainWindow::initUI()
     ui->frame_2->setFixedWidth(12);
     //设置底部widget高度
     ui->widget_Bottom->setFixedHeight(50);
+    //设置进度滑动条最小值
+    ui->horizontalSlider_Song->setMinimum(0);
 
     //设置歌曲信息部分
     //封面大小
@@ -42,7 +44,7 @@ void MainWindow::initUI()
     ui->pushButton_SongImage->setIconSize(QSize(60,60));
     //收藏及喜欢按钮的大小
     ui->pushButton_Love->setFixedSize(28,28);
-    ui->pushButton_Favorite->setFixedSize(28,28);
+    ui->pushButton_Star->setFixedSize(28,28);
 
     //widget高度
     ui->widget_Song->setFixedHeight(65);
@@ -72,6 +74,27 @@ void MainWindow::Connect()
         ui->label_Singer->setText(((SongQTableWidgetItem*)item)->song.Singer);
         ui->label_SongName->setText(((SongQTableWidgetItem*)item)->song.Title);
         ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(((SongQTableWidgetItem*)item)->song.getID3v2Image())));
+        ui->label_FinishTime->setText(QString("%1:%2").
+                                      arg(((SongQTableWidgetItem*)item)->song.minutes).
+                                      arg(((SongQTableWidgetItem*)item)->song.seconds,2,10,QLatin1Char('0')));
+        //设置滑动条最大值
+        ui->horizontalSlider_Song->setMaximum(((SongQTableWidgetItem*)item)->song.times);
+    });
+    //播放器状态改变时发送信号给暂停键
+    connect(this->player,&Player::stateChanged,ui->pushButton_PauseSong,&QPushButtonPause::slot_stateChanged);
+    //当前时间
+    connect(this->player,&Player::positionChanged,[=](qint64 p){
+        p /= 1000;
+        int seconds = p % 60;
+        int minutes = (p - seconds) / 60;
+        //改变label的值
+        ui->label_CurrentTime->setText(QString("%1:%2").arg(minutes).arg(seconds,2,10,QLatin1Char('0')));
+        //改变滑动条的值
+        ui->horizontalSlider_Song->setValue(p);
+    });
+    //通过滚动条修改进度
+    connect(ui->horizontalSlider_Song,&QSlider::sliderReleased,[=](){
+        player->setPosition(ui->horizontalSlider_Song->value() * 1000);
     });
 }
 
