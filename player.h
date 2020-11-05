@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QString>
+#include <QMediaPlayer>
+#include <QTimer>
+#include <QEventLoop>
 #include "models.h"
 
 //播放器
@@ -10,10 +13,14 @@ class Player : public QObject
 {
     Q_OBJECT
 public:
-    //无参构造
-    explicit Player(QObject *parent = nullptr);
     //有参构造
-    Player(QObject *parent = nullptr,ListModel *list = nullptr);
+    Player(QObject *parent = nullptr);
+    //拷贝构造
+    Player(const Player &t);
+    //赋值重载
+    Player& operator=(const Player &t);
+    //析构函数
+    ~Player();
     //获取播放器信息
     //获取当前歌曲
     QString getCurrentSong();
@@ -24,13 +31,25 @@ public:
     //设置音量
     int setVolume(int value);
     //播放
-    void play(QString url,bool video = false);//url为网络链接或者本地文件，video为是否播放视频
+    void play();
     //暂停
     void pause();
     //停止
     void stop();
     //加载并播放指定歌曲
-    void loadSong(SongModel song);
+    void loadSong(QString song,bool isVideo = false);//url为网络链接或者本地文件，video为是否播放视频
+    //设置歌单模型
+    void setList(ListModel *list);
+    //获取metaData
+    QVariant GetMetaData(const QString &key);
+
+private:
+    //歌单模型
+    ListModel* list;
+    //播放器
+    QMediaPlayer* player;
+    //是否读取完毕
+    bool isLoadFinish;
 
 
 

@@ -10,6 +10,7 @@
 #include "library.h"
 #include "dialoglocalfile.h"
 #include "otherui.h"
+#include "player.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +32,9 @@ private:
     ListModel* localList;
     //音乐库
     Library* library;
+    //播放器
+    Player* player;
+
     void initUI();
     void Connect();
 

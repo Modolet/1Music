@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     library = new Library;
+    player = new Player;
     ui->setupUi(this);
     this->initUI();
     this->Connect();
@@ -14,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete player;
 }
 
 void MainWindow::initUI()
@@ -58,7 +60,16 @@ void MainWindow::initUI()
 
 void MainWindow::Connect()
 {
+    //点击本地音乐
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
+    //点击本地音乐列表
+    connect(ui->tableWidget_LocalList,&QTableWidget::itemDoubleClicked,[=](QTableWidgetItem* item)
+    {
+        //播放音乐
+        player->loadSong(((SongQTableWidgetItem*)item)->Url);
+        //获取音乐属性并设置ui
+        ui->label_SongName->setText(player->GetMetaData("AlbumTitle").toString());
+    });
 }
 
 void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
@@ -92,12 +103,16 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         //隐藏表头
         ui->tableWidget_LocalList->horizontalHeader()->hide();
+        //设置为不可编辑
+        ui->tableWidget_LocalList->setEditTriggers(QAbstractItemView::NoEditTriggers);
         for(SongModel song:localList->Songs)
         {
-            qDebug() << song.Title;
             ui->tableWidget_LocalList->setItem(i,0,static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title)));
             i++;
         }
+        //设置播放器歌单
+        player->setList(localList);
+
     }
 }
 

@@ -220,14 +220,14 @@ background-color: rgba(255, 255, 255, 0);</string>
                   <item>
                    <widget class="QLabel" name="label_SongName">
                     <property name="text">
-                     <string>告白气球</string>
+                     <string/>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_Singer">
                     <property name="text">
-                     <string>周杰伦</string>
+                     <string/>
                     </property>
                    </widget>
                   </item>

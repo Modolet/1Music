@@ -131,7 +131,6 @@ void ListModel::ReadJson()
         for(auto obj:json_array)
         {
             SongModel song(obj.toObject().value("Url").toString(),true);
-            qDebug() << song.Url;
             song.Album = obj.toObject().value("Album").toString();
             song.Singer = obj.toObject().value("Singer").toString();
             song.Singer = obj.toObject().value("Source").toString();
