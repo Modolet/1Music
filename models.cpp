@@ -133,7 +133,7 @@ void ListModel::ReadJson()
             SongModel song(obj.toObject().value("Url").toString(),true);
             song.Album = obj.toObject().value("Album").toString();
             song.Singer = obj.toObject().value("Singer").toString();
-            song.Singer = obj.toObject().value("Source").toString();
+            song.Source = obj.toObject().value("Source").toString();
             song.Title = obj.toObject().value("Title").toString();
             this->insertSong(song);
         }
@@ -156,7 +156,13 @@ SongModel::SongModel(QString url,bool IsLocalSong)
     if(IsLocalSong)
     {
         FileName = url.split("/").last();
-        Title = FileName.mid(0,FileName.lastIndexOf("."));
+        TagLib::FileRef file(Url.toUtf8());
+        this->Album = QString::fromStdWString(file.tag()->album().toWString());
+        this->Singer = QString::fromStdWString(file.tag()->artist().toWString());
+        this->Title = QString::fromStdWString(file.tag()->title().toWString());
+        this->seconds = file.audioProperties()->length() % 60;
+        this->minutes = (file.audioProperties()->length() - seconds) / 60;
+        this->Source = "本地文件";
     }
 }
 
@@ -170,4 +176,22 @@ bool SongModel::operator==(const SongModel &obj)
     if(this->Url == obj.Url)
         return true;
     return false;
+}
+
+QImage SongModel::getID3v2Image()
+{
+
+    TagLib::MPEG::File file(Url.toUtf8());
+    TagLib::ID3v2::Tag *m_tag = file.ID3v2Tag(true);
+    TagLib::ID3v2::FrameList frameList = m_tag->frameList("APIC");
+    if(frameList.isEmpty()) {
+        return QImage();
+    }
+
+    TagLib::ID3v2::AttachedPictureFrame *coverImg = static_cast<TagLib::ID3v2::AttachedPictureFrame *>(frameList.front());
+
+    QImage coverQImg;
+    coverQImg.loadFromData((const uchar *) coverImg->picture().data(), coverImg->picture().size());
+
+    return coverQImg;
 }

@@ -6,10 +6,10 @@
 #include <QVector>
 #include <QDebug>
 
+#include "otherui.h"
 #include "models.h"
 #include "library.h"
 #include "dialoglocalfile.h"
-#include "otherui.h"
 #include "player.h"
 
 QT_BEGIN_NAMESPACE

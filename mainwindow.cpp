@@ -39,6 +39,7 @@ void MainWindow::initUI()
     //设置歌曲信息部分
     //封面大小
     ui->pushButton_SongImage->setFixedSize(60,60);
+    ui->pushButton_SongImage->setIconSize(QSize(60,60));
     //收藏及喜欢按钮的大小
     ui->pushButton_Love->setFixedSize(28,28);
     ui->pushButton_Favorite->setFixedSize(28,28);
@@ -66,9 +67,11 @@ void MainWindow::Connect()
     connect(ui->tableWidget_LocalList,&QTableWidget::itemDoubleClicked,[=](QTableWidgetItem* item)
     {
         //播放音乐
-        player->loadSong(((SongQTableWidgetItem*)item)->Url);
+        player->loadSong(((SongQTableWidgetItem*)item)->song.Url);
         //获取音乐属性并设置ui
-        ui->label_SongName->setText(player->GetMetaData("AlbumTitle").toString());
+        ui->label_Singer->setText(((SongQTableWidgetItem*)item)->song.Singer);
+        ui->label_SongName->setText(((SongQTableWidgetItem*)item)->song.Title);
+        ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(((SongQTableWidgetItem*)item)->song.getID3v2Image())));
     });
 }
 

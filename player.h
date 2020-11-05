@@ -40,16 +40,12 @@ public:
     void loadSong(QString song,bool isVideo = false);//url为网络链接或者本地文件，video为是否播放视频
     //设置歌单模型
     void setList(ListModel *list);
-    //获取metaData
-    QVariant GetMetaData(const QString &key);
 
 private:
     //歌单模型
     ListModel* list;
     //播放器
     QMediaPlayer* player;
-    //是否读取完毕
-    bool isLoadFinish;
 
 
 

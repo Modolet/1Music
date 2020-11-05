@@ -14,6 +14,14 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QMediaPlayer>
+#include <QImage>
+//taglib
+#include <taglib/tag.h>
+#include <taglib/fileref.h>
+#include <taglib/mpegfile.h>
+#include <taglib/id3v2frame.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/attachedpictureframe.h>
 
 //音乐资源模型
 class Models : public QObject
@@ -38,9 +46,13 @@ public:
     QString Singer;//歌手
     QString Album;//专辑
     QString FileName;//文件名
+    int minutes;//分钟数
+    int seconds;//秒钟数
 
     SongModel(QString url,bool IsLocalSong = false);
     ~SongModel();
+    //获取封面
+    QImage getID3v2Image();
     bool operator==(const SongModel &obj);
 };
 

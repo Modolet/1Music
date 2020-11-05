@@ -211,7 +211,7 @@ background-color: rgba(255, 255, 255, 0);</string>
                 <item>
                  <widget class="QPushButton" name="pushButton_SongImage">
                   <property name="text">
-                   <string>封面</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
@@ -415,7 +415,7 @@ background-color: rgba(255, 255, 255, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_PauseSong">
+        <widget class="QPushButtonPause" name="pushButton_PauseSong">
          <property name="styleSheet">
           <string notr="true">border-image: url(:/icon/ICONS/音乐圈.svg);</string>
          </property>
@@ -559,6 +559,13 @@ background-color: rgba(255, 255, 255, 0);</string>
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QPushButtonPause</class>
+   <extends>QPushButton</extends>
+   <header>otherui.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -38,3 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     image.qrc
+
+unix: LIBS += -L/usr/lib/ -ltag
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
