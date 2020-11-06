@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->initUI();
     this->Connect();
+    //设置音源
+    ui->listWidget_MusicSource->setCurrentRow(4);
+    this->on_listWidget_MusicSource_itemChanged(ui->listWidget_MusicSource->currentItem());
 }
 
 MainWindow::~MainWindow()
@@ -24,9 +27,9 @@ void MainWindow::initUI()
     this->setWindowTitle("1Music");
     //设置底部部分
     //设置下方左侧三个按钮的大小
-    ui->pushButton_NextSong->setFixedSize(40,40);
-    ui->pushButton_PauseSong->setFixedSize(45,45);
-    ui->pushButton_PreviousSong->setFixedSize(40,40);
+//    ui->pushButton_NextSong->setFixedSize(40,40);
+//    ui->pushButton_PauseSong->setFixedSize(45,45);
+//    ui->pushButton_PreviousSong->setFixedSize(40,40);
     //设置按钮左右的间隙
     ui->frame_0->setFixedWidth(15);
     ui->frame_3->setFixedWidth(15);
@@ -34,7 +37,7 @@ void MainWindow::initUI()
     ui->frame_1->setFixedWidth(12);
     ui->frame_2->setFixedWidth(12);
     //设置底部widget高度
-    ui->widget_Bottom->setFixedHeight(50);
+//    ui->widget_Bottom->setFixedHeight(50);
     //设置进度滑动条最小值
     ui->horizontalSlider_Song->setMinimum(0);
 
@@ -116,6 +119,20 @@ void MainWindow::Connect()
     //上一首
     connect(ui->pushButton_PreviousSong,&QPushButton::clicked,[=](){
         player->playlist()->previous();
+    });
+    //开始 暂停
+    connect(ui->pushButton_PauseSong,&QPushButtonPause::stateChanged,[=](QMediaPlayer::State state){
+        switch (state) {
+        case QMediaPlayer::PausedState:
+            player->pause();
+            break;
+        case QMediaPlayer::StoppedState:
+            player->stop();
+            break;
+        case QMediaPlayer::PlayingState:
+            player->play();
+            break;
+        }
     });
 }
 

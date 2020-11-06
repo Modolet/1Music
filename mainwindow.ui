@@ -388,7 +388,7 @@ background-color: rgba(255, 255, 255, 0);</string>
     </item>
     <item>
      <widget class="QWidget" name="widget_Bottom" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0">
        <item>
         <widget class="QFrame" name="frame_0">
          <property name="frameShape">
@@ -408,15 +408,20 @@ background-color: rgba(255, 255, 255, 0);</string>
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">border-image:url(:/icon/ICONS/上一首.svg)</string>
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="text">
           <string/>
          </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/上一首.svg</normaloff>:/icon/ICONS/上一首.svg</iconset>
+         </property>
          <property name="iconSize">
           <size>
-           <width>16</width>
-           <height>16</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -434,10 +439,21 @@ background-color: rgba(255, 255, 255, 0);</string>
        <item>
         <widget class="QPushButtonPause" name="pushButton_PauseSong">
          <property name="styleSheet">
-          <string notr="true">border-image: url(:/icon/ICONS/音乐圈.svg);</string>
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/暂停.svg</normaloff>:/icon/ICONS/暂停.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>45</width>
+           <height>45</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -454,10 +470,21 @@ background-color: rgba(255, 255, 255, 0);</string>
        <item>
         <widget class="QPushButton" name="pushButton_NextSong">
          <property name="styleSheet">
-          <string notr="true">border-image: url(:/icon/ICONS/下一首.svg);</string>
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/下一首.svg</normaloff>:/icon/ICONS/下一首.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>40</width>
+           <height>40</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -510,23 +537,6 @@ background-color: rgba(255, 255, 255, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame_5">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSlider" name="horizontalSlider_Volume">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QFrame" name="frame_6">
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -539,7 +549,13 @@ background-color: rgba(255, 255, 255, 0);</string>
        <item>
         <widget class="QPushButton" name="pushButton_Mode">
          <property name="text">
-          <string>顺序播放</string>
+          <string/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -555,8 +571,22 @@ background-color: rgba(255, 255, 255, 0);</string>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_CurrentList">
+         <property name="styleSheet">
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
+         </property>
          <property name="text">
-          <string>播放列表</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/其他.svg</normaloff>:/icon/ICONS/其他.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
          </property>
         </widget>
        </item>

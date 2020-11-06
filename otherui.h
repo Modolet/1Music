@@ -19,9 +19,12 @@ class QPushButtonPause : public QPushButton
     Q_OBJECT
 public:
     QPushButtonPause(QWidget* parrent);
-    bool pause;
+    QMediaPlayer::State state;
 public slots:
     void slot_stateChanged(QMediaPlayer::State status);
+
+signals:
+    void stateChanged(QMediaPlayer::State);
 };
 
 #endif // OTHERUI_H

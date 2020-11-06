@@ -8,20 +8,32 @@ SongQTableWidgetItem::SongQTableWidgetItem(SongModel song,const QString &text,in
 QPushButtonPause::QPushButtonPause(QWidget *parrent)
     :QPushButton(parrent)
 {
-
+    connect(this,&QPushButton::clicked,[=]()mutable{
+        if(state == QMediaPlayer::PlayingState){
+            state = QMediaPlayer::PausedState;
+            this->setIcon(QIcon(":/icon/ICONS/暂停.svg"));
+        }
+        else{
+            state = QMediaPlayer::PlayingState;
+            this->setIcon(QIcon(":/icon/ICONS/开始.svg"));
+        }
+        emit stateChanged(state);
+        return;
+    });
 }
 
 void QPushButtonPause::slot_stateChanged(QMediaPlayer::State status)
 {
+    this->state = status;
     switch (status) {
     case QMediaPlayer::PlayingState:
-        qDebug() << "播放";
+        this->setIcon(QIcon(":/icon/ICONS/开始.svg"));
         break;
     case QMediaPlayer::PausedState:
-        qDebug() << "暂停";
+        this->setIcon(QIcon(":/icon/ICONS/暂停.svg"));
         break;
     case QMediaPlayer::StoppedState:
-        qDebug() << "停止";
+        this->setIcon(QIcon(":/icon/ICONS/暂停.svg"));
         break;
     }
 }
