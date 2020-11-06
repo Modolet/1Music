@@ -73,19 +73,22 @@ void MainWindow::Connect()
     {
         //播放音乐
         player->loadSong(((SongQTableWidgetItem*)item)->song.Url);
+        //滑动条没有被按下
+        isSliderPress = false;
+    });
+    //当前歌曲变更时，要设置对应的ui
+    connect(player,&Player::currentSongChanged,[=](SongModel song){
         //获取音乐属性并设置ui
-        ui->label_Singer->setText(((SongQTableWidgetItem*)item)->song.Singer);
-        ui->label_SongName->setText(((SongQTableWidgetItem*)item)->song.Title);
-        ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(((SongQTableWidgetItem*)item)->song.getID3v2Image())));
+        ui->label_Singer->setText(song.Singer);
+        ui->label_SongName->setText(song.Title);
+        ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(song.getID3v2Image())));
         ui->label_FinishTime->setText(QString("%1:%2").
-                                      arg(((SongQTableWidgetItem*)item)->song.minutes).
-                                      arg(((SongQTableWidgetItem*)item)->song.seconds,2,10,QLatin1Char('0')));
+                                      arg(song.minutes).
+                                      arg(song.seconds,2,10,QLatin1Char('0')));
         //设置滑动条最大值
-        ui->horizontalSlider_Song->setMaximum(((SongQTableWidgetItem*)item)->song.times);
+        ui->horizontalSlider_Song->setMaximum(song.times);
         //设置滑动条当前值
         ui->horizontalSlider_Song->setValue(0);
-        //没有被按下
-        isSliderPress = false;
     });
     //播放器状态改变时发送信号给暂停键
     connect(this->player,&Player::stateChanged,ui->pushButton_PauseSong,&QPushButtonPause::slot_stateChanged);
@@ -104,6 +107,15 @@ void MainWindow::Connect()
     connect(ui->horizontalSlider_Song,&QSlider::sliderReleased,[=]()mutable{
         player->setPosition(ui->horizontalSlider_Song->value() * 1000);
         isSliderPress = false;
+    });
+    //切换 暂停
+    //下一首
+    connect(ui->pushButton_NextSong,&QPushButton::clicked,[=](){
+        player->playlist()->next();
+    });
+    //上一首
+    connect(ui->pushButton_PreviousSong,&QPushButton::clicked,[=](){
+        player->playlist()->previous();
     });
 }
 
