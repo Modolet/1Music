@@ -62,6 +62,22 @@ void MainWindow::initUI()
     //设置ListWidget的高度为行数*每行高度
     ui->listWidget_Mine->setFixedHeight(ui->listWidget_Mine->sizeHintForRow(0) * ui->listWidget_Mine->count());
     ui->listWidget_MusicSource->setFixedHeight(ui->listWidget_MusicSource->sizeHintForRow(0) * ui->listWidget_MusicSource->count());
+
+    //LocalList设置
+    //设置列数
+    ui->tableWidget_LocalList->setColumnCount(5);
+    //设置列宽
+    ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
+    ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(2,QHeaderView::ResizeToContents);
+    //隐藏表头
+    ui->tableWidget_LocalList->horizontalHeader()->hide();
+    //隐藏列标
+    ui->tableWidget_LocalList->verticalHeader()->hide();
+    //隐藏分割线
+    ui->tableWidget_LocalList->setShowGrid(false);
+    //设置为不可编辑
+    ui->tableWidget_LocalList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void MainWindow::Connect()
@@ -71,11 +87,35 @@ void MainWindow::Connect()
     });
     //点击本地音乐
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
-    //点击本地音乐列表
-    connect(ui->tableWidget_LocalList,&QTableWidget::itemDoubleClicked,[=](QTableWidgetItem* item)
+    //点击本地音乐的歌曲
+    connect(ui->tableWidget_LocalList,&QTableWidget::cellDoubleClicked,[=](int row, int column)
     {
-        //播放音乐
-        player->loadSong(((SongQTableWidgetItem*)item)->song.Url);
+        QString temp;
+        switch (column) {
+        case 1:
+            player->loadSong(((SongQTableWidgetItem*)ui->tableWidget_LocalList->item(row,column))->song.Url);
+            break;
+        case 3:
+            temp = ((SongQTableWidgetItem*)ui->tableWidget_LocalList->item(row,column))->song.Singer;
+            for(int i = 0;i < ui->tableWidget_LocalList->rowCount();i++)
+            {
+                if(((SongQTableWidgetItem*)ui->tableWidget_LocalList->item(i,column))->song.Singer == temp)
+                    ui->tableWidget_LocalList->showRow(i);
+                else
+                    ui->tableWidget_LocalList->hideRow(i);
+            }
+            break;
+        case 4:
+            temp = ((SongQTableWidgetItem*)ui->tableWidget_LocalList->item(row,column))->song.Album;
+            for(int i = 0;i < ui->tableWidget_LocalList->rowCount();i++)
+            {
+                if(((SongQTableWidgetItem*)ui->tableWidget_LocalList->item(i,column))->song.Album == temp)
+                    ui->tableWidget_LocalList->showRow(i);
+                else
+                    ui->tableWidget_LocalList->hideRow(i);
+            }
+            break;
+        }
         //滑动条没有被按下
         isSliderPress = false;
     });
@@ -160,21 +200,8 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         //获取歌单
         //添加进TableWidget
         int i = 0;
-        //设置行数列数
+        //设置行数
         ui->tableWidget_LocalList->setRowCount(localList->Songs.size());
-        ui->tableWidget_LocalList->setColumnCount(5);
-        //设置列宽
-        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
-        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(2,QHeaderView::ResizeToContents);
-        //隐藏表头
-        ui->tableWidget_LocalList->horizontalHeader()->hide();
-        //隐藏列标
-        ui->tableWidget_LocalList->verticalHeader()->hide();
-        //隐藏分割线
-        ui->tableWidget_LocalList->setShowGrid(false);
-        //设置为不可编辑
-        ui->tableWidget_LocalList->setEditTriggers(QAbstractItemView::NoEditTriggers);
         for(SongModel song:localList->Songs)
         {
             //音源
@@ -198,6 +225,9 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         }
         //设置播放器歌单
         player->setList(localList);
+        //显示全部项
+        for(int i = 0;i < ui->tableWidget_LocalList->rowCount();i++)
+            ui->tableWidget_LocalList->showRow(i);
 
     }
 }
