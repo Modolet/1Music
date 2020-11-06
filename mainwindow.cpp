@@ -162,16 +162,38 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
         int i = 0;
         //设置行数列数
         ui->tableWidget_LocalList->setRowCount(localList->Songs.size());
-        ui->tableWidget_LocalList->setColumnCount(1);
+        ui->tableWidget_LocalList->setColumnCount(5);
         //设置列宽
         ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
+        ui->tableWidget_LocalList->horizontalHeader()->setSectionResizeMode(2,QHeaderView::ResizeToContents);
         //隐藏表头
         ui->tableWidget_LocalList->horizontalHeader()->hide();
+        //隐藏列标
+        ui->tableWidget_LocalList->verticalHeader()->hide();
+        //隐藏分割线
+        ui->tableWidget_LocalList->setShowGrid(false);
         //设置为不可编辑
         ui->tableWidget_LocalList->setEditTriggers(QAbstractItemView::NoEditTriggers);
         for(SongModel song:localList->Songs)
         {
-            ui->tableWidget_LocalList->setItem(i,0,static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title)));
+            //音源
+            QTableWidgetItem* sourceItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Source));
+            sourceItem->setFlags(Qt::ItemIsSelectable);
+            ui->tableWidget_LocalList->setItem(i,0,sourceItem);
+            //标题
+            QTableWidgetItem* titleItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title));
+            ui->tableWidget_LocalList->setItem(i,1,titleItem);
+            //时长
+            QTableWidgetItem* timeItem = new QTableWidgetItem(QString("%1:%2").arg(song.minutes).arg(song.seconds,2,10,QLatin1Char('0')));
+            timeItem->setFlags(Qt::ItemIsSelectable);
+            ui->tableWidget_LocalList->setItem(i,2,timeItem);
+            //歌手
+            QTableWidgetItem* singerItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Singer));
+            ui->tableWidget_LocalList->setItem(i,3,singerItem);
+            //专辑
+            QTableWidgetItem* AlbumItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Album));
+            ui->tableWidget_LocalList->setItem(i,4,AlbumItem);
             i++;
         }
         //设置播放器歌单
