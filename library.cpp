@@ -20,6 +20,7 @@ ListModel *Library::GetList(QString ListName)
 {
     if(ListName == "local")
         return new ListModel("./lists/locallist.json",true);
+    return nullptr;
 }
 
 void Library::GetLocalAudio(QStringList dirs)

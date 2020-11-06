@@ -87,7 +87,7 @@ void MainWindow::Connect()
     });
     //点击本地音乐
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
-    //点击本地音乐的歌曲
+    //点击表格项
     connect(ui->tableWidget_LocalList,&QTableWidget::cellDoubleClicked,[=](int row, int column)
     {
         QString temp;
@@ -173,6 +173,30 @@ void MainWindow::Connect()
             player->play();
             break;
         }
+    });
+    //本地音乐的搜索
+    connect(ui->lineEdit_localSearch,&QLineEdit::textChanged,[=](QString text){
+        //如果长度为0,则显示所有项
+       if(text.length() == 0)
+           for(int i = 0;i < ui->tableWidget_LocalList->rowCount();i++)
+               ui->tableWidget_LocalList->showRow(i);
+       QList<QTableWidgetItem*> itemList = ui->tableWidget_LocalList->findItems(text,Qt::MatchContains);
+       //隐藏所有项
+       for(int i = 0;i< ui->tableWidget_LocalList->rowCount();i++)
+           ui->tableWidget_LocalList->hideRow(i);
+       //如果搜索项不为空，则显示搜索项
+       if(!itemList.isEmpty())
+           for(int i = 0;i < itemList.count();i++)
+               //排除第一列（音源）和第二列（时间）
+               switch(itemList.at(i)->column())
+               {
+               case 0:
+               case 2:
+                   break;
+               default:
+                   ui->tableWidget_LocalList->showRow(itemList.at(i)->row());
+                   break;
+               }
     });
 }
 
