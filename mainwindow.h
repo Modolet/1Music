@@ -36,12 +36,25 @@ private:
     Player* player;
     //音乐滑动条是否被按下
     bool isSliderPress = true;
-
+    //UI
+    //音量调节条
+    MySlider* Slider_Volume;
+    //当前列表
+    QListWidget* ListWidget_currentPlayList;
     void initUI();
     void Connect();
+    //窗口大小改变时间
+    void resizeEvent(QResizeEvent* size);
 
 public slots:
+    //音源改变时
     void on_listWidget_MusicSource_itemChanged(QListWidgetItem* item);
+    //设置音量
+    void setVolume();
+    //当前播放列表
+    void currentPlaylist();
+
+protected:
 
 
 };

@@ -202,6 +202,19 @@ background-color: rgba(255, 255, 255, 0);</string>
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </widget>
              </item>
@@ -535,9 +548,23 @@ background-color: rgba(255, 255, 255, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_Mute">
+        <widget class="QPushButton" name="pushButton_Volume">
+         <property name="styleSheet">
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
+         </property>
          <property name="text">
-          <string>静音</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/音量.svg</normaloff>:/icon/ICONS/音量.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -552,9 +579,17 @@ background-color: rgba(255, 255, 255, 0);</string>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_Mode">
+        <widget class="QPushButtonPlaybackMode" name="pushButton_Mode">
+         <property name="styleSheet">
+          <string notr="true">border:0px solid gray;
+background-color: rgba(255, 255, 255, 0);</string>
+         </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="image.qrc">
+           <normaloff>:/icon/ICONS/列表循环.svg</normaloff>:/icon/ICONS/列表循环.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -585,7 +620,7 @@ background-color: rgba(255, 255, 255, 0);</string>
          </property>
          <property name="icon">
           <iconset resource="image.qrc">
-           <normaloff>:/icon/ICONS/其他.svg</normaloff>:/icon/ICONS/其他.svg</iconset>
+           <normaloff>:/icon/ICONS/表单.svg</normaloff>:/icon/ICONS/表单.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -614,6 +649,11 @@ background-color: rgba(255, 255, 255, 0);</string>
  <customwidgets>
   <customwidget>
    <class>QPushButtonPause</class>
+   <extends>QPushButton</extends>
+   <header>otherui.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QPushButtonPlaybackMode</class>
    <extends>QPushButton</extends>
    <header>otherui.h</header>
   </customwidget>

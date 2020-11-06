@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    //构造变量
     library = new Library;
     player = new Player;
     ui->setupUi(this);
@@ -19,10 +20,26 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete player;
+    delete Slider_Volume;
+    delete ListWidget_currentPlayList;
 }
 
 void MainWindow::initUI()
 {
+    //构造UI
+    Slider_Volume = new MySlider(Qt::Vertical,this);
+    ListWidget_currentPlayList = new QListWidget(this);
+    //默认隐藏
+    Slider_Volume->hide();
+    ListWidget_currentPlayList->hide();
+    //初始化音量滑动条
+    Slider_Volume->setMaximum(100);
+    Slider_Volume->setMinimum(0);
+    Slider_Volume->setValue(100);
+    //设置音量条大小
+    Slider_Volume->resize(20,100);
+
+
     //设置窗口标题
     this->setWindowTitle("1Music");
     //设置底部部分
@@ -78,6 +95,8 @@ void MainWindow::initUI()
     ui->tableWidget_LocalList->setShowGrid(false);
     //设置为不可编辑
     ui->tableWidget_LocalList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
 }
 
 void MainWindow::Connect()
@@ -87,6 +106,8 @@ void MainWindow::Connect()
     });
     //点击本地音乐
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
+    //点击音量键
+    connect(ui->pushButton_Volume,&QPushButton::clicked,this,&MainWindow::setVolume);
     //点击表格项
     connect(ui->tableWidget_LocalList,&QTableWidget::cellDoubleClicked,[=](int row, int column)
     {
@@ -135,6 +156,8 @@ void MainWindow::Connect()
     });
     //播放器状态改变时发送信号给暂停键
     connect(this->player,&Player::stateChanged,ui->pushButton_PauseSong,&QPushButtonPause::slot_stateChanged);
+    //播放模式改变时发送信号给模式健
+    connect(this->player->playList,&QMediaPlaylist::playbackModeChanged,ui->pushButton_Mode,&QPushButtonPlaybackMode::slot_playbackModeChanged);
     //当前时间
     connect(this->player,&Player::positionChanged,[=](qint64 p){
         p /= 1000;
@@ -174,6 +197,10 @@ void MainWindow::Connect()
             break;
         }
     });
+    //播放模式
+    connect(ui->pushButton_Mode,&QPushButtonPlaybackMode::playbackModeChanged,[=](QMediaPlaylist::PlaybackMode playbackMode){
+       this->player->playlist()->setPlaybackMode(playbackMode);
+    });
     //本地音乐的搜索
     connect(ui->lineEdit_localSearch,&QLineEdit::textChanged,[=](QString text){
         //如果长度为0,则显示所有项
@@ -198,6 +225,16 @@ void MainWindow::Connect()
                    break;
                }
     });
+    //音量改变
+    connect(this->Slider_Volume,&QSlider::valueChanged,this->player,&QMediaPlayer::setVolume);
+}
+
+//需要重新设置音量条 播放列表的位置
+void MainWindow::resizeEvent(QResizeEvent *size)
+{
+    Slider_Volume->move(ui->pushButton_Volume->geometry().x() + ui->pushButton_Volume->width()/2 - 10,
+                        this->size().height() - 105 - ui->widget_Bottom->size().height()/2 - ui->pushButton_Volume->size().height()/2);
+    return QMainWindow::resizeEvent(size);
 }
 
 void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
@@ -254,5 +291,22 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
             ui->tableWidget_LocalList->showRow(i);
 
     }
+}
+
+void MainWindow::setVolume()
+{
+    //设置滑动条位置
+    Slider_Volume->move(ui->pushButton_Volume->geometry().x() + ui->pushButton_Volume->width()/2 - 10,
+                        this->size().height() - 105 - ui->widget_Bottom->size().height()/2 - ui->pushButton_Volume->size().height()/2);
+    //控制显示隐藏
+    if(Slider_Volume->isHidden())
+        Slider_Volume->show();
+    else
+        Slider_Volume->hide();
+}
+
+void MainWindow::currentPlaylist()
+{
+
 }
 
