@@ -130,7 +130,7 @@ void ListModel::ReadJson()
         json_array = json_doc.value("Song").toArray();
         for(auto obj:json_array)
         {
-            SongModel song(obj.toObject().value("Url").toString(),true);
+            SongModel song(obj.toObject().value("Url").toString(),true,true);
             song.Album = obj.toObject().value("Album").toString();
             song.Singer = obj.toObject().value("Singer").toString();
             song.Source = obj.toObject().value("Source").toString();
@@ -149,11 +149,11 @@ bool ListModel::isExist()
     return IsExist;
 }
 
-SongModel::SongModel(QString url,bool IsLocalSong)
+SongModel::SongModel(QString url,bool IsLocalSong,bool IsSaved)
 {
     this->Url = url;
     this->IsLocalSong = IsLocalSong;
-    if(IsLocalSong)
+    if(IsLocalSong && (!IsSaved))
     {
         FileName = url.split("/").last();
         TagLib::FileRef file(Url.toUtf8());

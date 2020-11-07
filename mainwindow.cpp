@@ -21,23 +21,24 @@ MainWindow::~MainWindow()
     delete ui;
     delete player;
     delete Slider_Volume;
-    delete ListWidget_currentPlayList;
 }
 
 void MainWindow::initUI()
 {
     //构造UI
     Slider_Volume = new MySlider(Qt::Vertical,this);
-    ListWidget_currentPlayList = new QListWidget(this);
     //默认隐藏
     Slider_Volume->hide();
-    ListWidget_currentPlayList->hide();
     //初始化音量滑动条
     Slider_Volume->setMaximum(100);
     Slider_Volume->setMinimum(0);
     Slider_Volume->setValue(100);
     //设置音量条大小
     Slider_Volume->resize(20,100);
+    //调整详情页图片的尺寸
+    ui->label_SongLeftImage->setFixedSize(this->size().height()/2,this->size().height()/2);
+    //设置详情页左侧间隔的高度
+    ui->frame_SongLeft->setFixedHeight(50);
 
 
     //设置窗口标题
@@ -108,6 +109,13 @@ void MainWindow::Connect()
     connect(ui->listWidget_MusicSource,&QListWidget::itemClicked,this,&MainWindow::on_listWidget_MusicSource_itemChanged);
     //点击音量键
     connect(ui->pushButton_Volume,&QPushButton::clicked,this,&MainWindow::setVolume);
+    //点击封面键
+    connect(ui->pushButton_SongImage,&QPushButton::clicked,[=](){
+        ui->stackedWidget_center->setCurrentIndex(1);
+    });
+    connect(ui->pushButton_SongRightClose,&QPushButton::clicked,[=](){
+        ui->stackedWidget_center->setCurrentIndex(0);
+    });
     //点击表格项
     connect(ui->tableWidget_LocalList,&QTableWidget::cellDoubleClicked,[=](int row, int column)
     {
@@ -143,9 +151,15 @@ void MainWindow::Connect()
     //当前歌曲变更时，要设置对应的ui
     connect(player,&Player::currentSongChanged,[=](SongModel song){
         //获取音乐属性并设置ui
+        //设置歌手
         ui->label_Singer->setText(song.Singer);
+        ui->pushButton_SongRightSinger->setText(song.Singer);
+        //设置标题
         ui->label_SongName->setText(song.Title);
+        ui->label_SongRightTitle->setText(song.Title);
+        //设置封面图片
         ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(song.getID3v2Image())));
+        ui->label_SongLeftImage->setPixmap(QPixmap::fromImage(song.getID3v2Image()));
         ui->label_FinishTime->setText(QString("%1:%2").
                                       arg(song.minutes).
                                       arg(song.seconds,2,10,QLatin1Char('0')));
@@ -303,10 +317,5 @@ void MainWindow::setVolume()
         Slider_Volume->show();
     else
         Slider_Volume->hide();
-}
-
-void MainWindow::currentPlaylist()
-{
-
 }
 

@@ -39,8 +39,6 @@ private:
     //UI
     //音量调节条
     MySlider* Slider_Volume;
-    //当前列表
-    QListWidget* ListWidget_currentPlayList;
     void initUI();
     void Connect();
     //窗口大小改变时间
@@ -51,8 +49,6 @@ public slots:
     void on_listWidget_MusicSource_itemChanged(QListWidgetItem* item);
     //设置音量
     void setVolume();
-    //当前播放列表
-    void currentPlaylist();
 
 protected:
 
