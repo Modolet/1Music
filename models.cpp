@@ -89,7 +89,7 @@ void ListModel::saveJson()
             json_object.insert("Source",song.Source);
         }
         else
-            json_object.insert("Source",song.Url);
+            json_object.insert("Source","本地音乐");
         json_list.append(json_object);
     }
     json_doc.insert("Song",json_list);
@@ -140,8 +140,6 @@ void ListModel::ReadJson()
     }  catch (const char* msg) {
 
     }
-
-
 }
 
 bool ListModel::isExist()

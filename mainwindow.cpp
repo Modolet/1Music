@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->Connect();
     //设置音源
     ui->listWidget_MusicSource->setCurrentRow(4);
-    this->on_listWidget_MusicSource_itemChanged(ui->listWidget_MusicSource->currentItem());
+//    this->on_listWidget_MusicSource_itemChanged(ui->listWidget_MusicSource->currentItem());
 }
 
 MainWindow::~MainWindow()
@@ -260,43 +260,51 @@ void MainWindow::on_listWidget_MusicSource_itemChanged(QListWidgetItem *item)
     //点击不同的按钮
     if(item->text() == "本地音乐")
     {
+        //注册播放器
+        library->Register(SOURCE::local);
         //获取歌单
         localList = library->GetList("local");
+        //如果未获取歌单则重新获取歌单
+        if(localList->Songs.size() == 0)
+            localList = library->GetList("local");
         //切换页面
         ui->stackedWidget_list->setCurrentWidget(ui->page_local);
         //不存在就弹出对话框，扫描
-        library->Register(SOURCE::local);
-        if(!library->GetList("local")->isExist())
+        if(!localList->isExist())
         {
             DialogLocalFile w(nullptr,library);
             w.exec();
+            localList = library->GetList("local");
         }
         //扫描完成，或者歌单存在
-        //获取歌单
-        //添加进TableWidget
-        int i = 0;
-        //设置行数
-        ui->tableWidget_LocalList->setRowCount(localList->Songs.size());
-        for(SongModel song:localList->Songs)
+        //如果LocalList的行数为0
+        if(!ui->tableWidget_LocalList->rowCount())
         {
-            //音源
-            QTableWidgetItem* sourceItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Source));
-            sourceItem->setFlags(Qt::ItemIsSelectable);
-            ui->tableWidget_LocalList->setItem(i,0,sourceItem);
-            //标题
-            QTableWidgetItem* titleItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title));
-            ui->tableWidget_LocalList->setItem(i,1,titleItem);
-            //时长
-            QTableWidgetItem* timeItem = new QTableWidgetItem(QString("%1:%2").arg(song.minutes).arg(song.seconds,2,10,QLatin1Char('0')));
-            timeItem->setFlags(Qt::ItemIsSelectable);
-            ui->tableWidget_LocalList->setItem(i,2,timeItem);
-            //歌手
-            QTableWidgetItem* singerItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Singer));
-            ui->tableWidget_LocalList->setItem(i,3,singerItem);
-            //专辑
-            QTableWidgetItem* AlbumItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Album));
-            ui->tableWidget_LocalList->setItem(i,4,AlbumItem);
-            i++;
+            //添加进TableWidget
+            int i = 0;
+            //设置行数
+            ui->tableWidget_LocalList->setRowCount(localList->Songs.size());
+            for(SongModel song:localList->Songs)
+            {
+                //音源
+                QTableWidgetItem* sourceItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Source));
+                sourceItem->setFlags(Qt::ItemIsSelectable);
+                ui->tableWidget_LocalList->setItem(i,0,sourceItem);
+                //标题
+                QTableWidgetItem* titleItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Title));
+                ui->tableWidget_LocalList->setItem(i,1,titleItem);
+                //时长
+                QTableWidgetItem* timeItem = new QTableWidgetItem(QString("%1:%2").arg(song.minutes).arg(song.seconds,2,10,QLatin1Char('0')));
+                timeItem->setFlags(Qt::ItemIsSelectable);
+                ui->tableWidget_LocalList->setItem(i,2,timeItem);
+                //歌手
+                QTableWidgetItem* singerItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Singer));
+                ui->tableWidget_LocalList->setItem(i,3,singerItem);
+                //专辑
+                QTableWidgetItem* AlbumItem = static_cast<QTableWidgetItem*>(new SongQTableWidgetItem(song,song.Album));
+                ui->tableWidget_LocalList->setItem(i,4,AlbumItem);
+                i++;
+            }
         }
         //设置播放器歌单
         player->setList(localList);

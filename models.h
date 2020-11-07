@@ -50,7 +50,7 @@ public:
     int seconds;//秒钟数
     int times;//总数
 
-    SongModel(QString url,bool IsLocalSong = false,bool = false);
+    SongModel(QString url,bool IsLocalSong = false,bool b = false);
     ~SongModel();
     //获取封面
     QImage getID3v2Image();
