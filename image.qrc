@@ -27,5 +27,6 @@
         <file>ICONS/音量.svg</file>
         <file>ICONS/单曲循环.svg</file>
         <file>ICONS/随机播放.svg</file>
+        <file>ICONS/收缩.svg</file>
     </qresource>
 </RCC>

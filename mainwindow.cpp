@@ -27,6 +27,10 @@ void MainWindow::initUI()
 {
     //构造UI
     Slider_Volume = new MySlider(Qt::Vertical,this);
+
+    //默认的堆叠窗口
+    ui->stackedWidget_list->setCurrentWidget(ui->page_start);
+    ui->stackedWidget_center->setCurrentWidget(ui->page_main);
     //默认隐藏
     Slider_Volume->hide();
     //初始化音量滑动条
@@ -36,9 +40,11 @@ void MainWindow::initUI()
     //设置音量条大小
     Slider_Volume->resize(20,100);
     //调整详情页图片的尺寸
-    ui->label_SongLeftImage->setFixedSize(this->size().height()/2,this->size().height()/2);
+    ui->label_SongLeftImage->setFixedSize(this->size().height()/5*2,this->size().height()/5*2);
     //设置详情页左侧间隔的高度
-    ui->frame_SongLeft->setFixedHeight(50);
+    ui->frame_SongLeft->setFixedHeight(20);
+    //设置详情页左侧封面和顶部之间间隔的高度
+    ui->frame_SongLeftUp->setFixedHeight(30);
 
 
     //设置窗口标题
@@ -102,6 +108,7 @@ void MainWindow::initUI()
 
 void MainWindow::Connect()
 {
+    //按下滑动条
     connect(ui->horizontalSlider_Song,&QSlider::sliderPressed,[=]()mutable{
         isSliderPress = true;
     });
@@ -113,6 +120,7 @@ void MainWindow::Connect()
     connect(ui->pushButton_SongImage,&QPushButton::clicked,[=](){
         ui->stackedWidget_center->setCurrentIndex(1);
     });
+    //关闭详情页
     connect(ui->pushButton_SongRightClose,&QPushButton::clicked,[=](){
         ui->stackedWidget_center->setCurrentIndex(0);
     });
@@ -151,25 +159,39 @@ void MainWindow::Connect()
     //当前歌曲变更时，要设置对应的ui
     connect(player,&Player::currentSongChanged,[=](SongModel song){
         //获取音乐属性并设置ui
-        //设置歌手
-        ui->label_Singer->setText(song.Singer);
-        ui->pushButton_SongRightSinger->setText(song.Singer);
-        //设置标题
-        ui->label_SongName->setText(song.Title);
-        ui->label_SongRightTitle->setText(song.Title);
-        //设置封面图片
-        ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(song.getID3v2Image())));
-        ui->label_SongLeftImage->setPixmap(QPixmap::fromImage(song.getID3v2Image()));
+        //设置左下角WidgetUI
+        ui->label_Singer->setText(song.Singer);//设置歌手
+        ui->label_SongName->setText(song.Title);//设置标题
+        ui->pushButton_SongImage->setIcon(QIcon(QPixmap::fromImage(song.getID3v2Image())));//设置封面图片
         ui->label_FinishTime->setText(QString("%1:%2").
                                       arg(song.minutes).
-                                      arg(song.seconds,2,10,QLatin1Char('0')));
-        //设置滑动条最大值
-        ui->horizontalSlider_Song->setMaximum(song.times);
-        //设置滑动条当前值
-        ui->horizontalSlider_Song->setValue(0);
+                                      arg(song.seconds,2,10,QLatin1Char('0')));//设置歌曲时长标签
+
+        //设置歌曲详情页UI
+        ui->label_SongRightTitle->setText(song.Title);//设置标题
+        ui->pushButton_SongRightSinger->setText(song.Singer);//设置歌手
+        ui->pushButton_SongRightAlbum->setText(song.Album);//设置专辑
+        ui->pushButton_SongRightSource->setText(song.Source);//设置来源
+        ui->label_SongLeftImage->setPixmap(QPixmap::fromImage(song.getID3v2Image()));//设置封面图片
+
+        //设置滑动条
+        ui->horizontalSlider_Song->setMaximum(song.times);//设置滑动条最大值
+        ui->horizontalSlider_Song->setValue(0);//设置滑动条当前值
     });
     //播放器状态改变时发送信号给暂停键
     connect(this->player,&Player::stateChanged,ui->pushButton_PauseSong,&QPushButtonPause::slot_stateChanged);
+    //播放器状态改变时控制详情页封面的旋转
+    connect(this->player,&Player::stateChanged,[=](QMediaPlayer::State newState){
+        switch (newState) {
+        case QMediaPlayer::State::PlayingState:
+            ui->label_SongLeftImage->slot_continueTimer();
+            break;
+        default:
+            ui->label_SongLeftImage->slot_pauseTimer();
+            break;
+        }
+
+    });
     //播放模式改变时发送信号给模式健
     connect(this->player->playList,&QMediaPlaylist::playbackModeChanged,ui->pushButton_Mode,&QPushButtonPlaybackMode::slot_playbackModeChanged);
     //当前时间
@@ -199,21 +221,23 @@ void MainWindow::Connect()
     });
     //开始 暂停
     connect(ui->pushButton_PauseSong,&QPushButtonPause::stateChanged,[=](QMediaPlayer::State state){
-        switch (state) {
-        case QMediaPlayer::PausedState:
-            player->pause();
-            break;
-        case QMediaPlayer::StoppedState:
-            player->stop();
-            break;
-        case QMediaPlayer::PlayingState:
-            player->play();
-            break;
-        }
+        if(!player->currentMedia().isNull())
+            switch (state) {
+            case QMediaPlayer::PausedState:
+                player->pause();
+                break;
+            case QMediaPlayer::StoppedState:
+                player->stop();
+                break;
+            case QMediaPlayer::PlayingState:
+                player->play();
+                break;
+            }
     });
     //播放模式
     connect(ui->pushButton_Mode,&QPushButtonPlaybackMode::playbackModeChanged,[=](QMediaPlaylist::PlaybackMode playbackMode){
-       this->player->playlist()->setPlaybackMode(playbackMode);
+        if(!player->playlist()->isEmpty())
+            this->player->playlist()->setPlaybackMode(playbackMode);
     });
     //本地音乐的搜索
     connect(ui->lineEdit_localSearch,&QLineEdit::textChanged,[=](QString text){
@@ -243,9 +267,12 @@ void MainWindow::Connect()
     connect(this->Slider_Volume,&QSlider::valueChanged,this->player,&QMediaPlayer::setVolume);
 }
 
-//需要重新设置音量条 播放列表的位置
+//需要重新设置部分UI的位置
 void MainWindow::resizeEvent(QResizeEvent *size)
 {
+    //调整详情页图片的尺寸
+    ui->label_SongLeftImage->setFixedSize(this->size().height()/5*2,this->size().height()/5*2);
+    //音量条位置
     Slider_Volume->move(ui->pushButton_Volume->geometry().x() + ui->pushButton_Volume->width()/2 - 10,
                         this->size().height() - 105 - ui->widget_Bottom->size().height()/2 - ui->pushButton_Volume->size().height()/2);
     return QMainWindow::resizeEvent(size);

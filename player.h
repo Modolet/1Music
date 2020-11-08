@@ -23,11 +23,6 @@ public:
     Player& operator=(const Player &t);
     //析构函数
     ~Player();
-    //获取播放器信息
-    //获取当前歌曲
-    QString getCurrentSong();
-    //获取歌单信息
-    QString getCurrentList();
     //加载并播放指定歌曲
     void loadSong(SongModel song);
     //设置歌单模型

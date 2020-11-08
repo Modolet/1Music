@@ -83,6 +83,7 @@ void ListModel::saveJson()
         json_object.insert("Title",song.Title);
         json_object.insert("Singer",song.Singer);
         json_object.insert("Album",song.Album);
+        json_object.insert("Time",song.times);
         if(!song.IsLocalSong)
         {
             json_object.insert("id",song.Id);
@@ -162,6 +163,13 @@ SongModel::SongModel(QString url,bool IsLocalSong,bool IsSaved)
         this->seconds = file.audioProperties()->length() % 60;
         this->minutes = (file.audioProperties()->length() - seconds) / 60;
         this->Source = "本地文件";
+    }
+    else if(IsLocalSong && IsSaved)
+    {
+        TagLib::FileRef file(Url.toUtf8());
+        this->times = file.audioProperties()->length();
+        this->seconds = file.audioProperties()->length() % 60;
+        this->minutes = (file.audioProperties()->length() - seconds) / 60;
     }
 }
 
