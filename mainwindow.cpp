@@ -213,11 +213,13 @@ void MainWindow::Connect()
     //切换 暂停
     //下一首
     connect(ui->pushButton_NextSong,&QPushButton::clicked,[=](){
-        player->playlist()->next();
+        if(player->playlist())
+            player->playlist()->next();
     });
     //上一首
     connect(ui->pushButton_PreviousSong,&QPushButton::clicked,[=](){
-        player->playlist()->previous();
+        if(player->playlist())
+            player->playlist()->previous();
     });
     //开始 暂停
     connect(ui->pushButton_PauseSong,&QPushButtonPause::stateChanged,[=](QMediaPlayer::State state){
@@ -236,7 +238,7 @@ void MainWindow::Connect()
     });
     //播放模式
     connect(ui->pushButton_Mode,&QPushButtonPlaybackMode::playbackModeChanged,[=](QMediaPlaylist::PlaybackMode playbackMode){
-        if(!player->playlist()->isEmpty())
+        if(player->playlist())
             this->player->playlist()->setPlaybackMode(playbackMode);
     });
     //本地音乐的搜索
